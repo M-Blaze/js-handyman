@@ -1,0 +1,15 @@
+{
+  "name": "obj-utilities",
+  "version": "1.0.0",
+  "description": "Helper functions for objects in Javascript.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "raimoulik@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
