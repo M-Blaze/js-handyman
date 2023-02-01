@@ -1,3 +1,4 @@
+import { DefaultObject } from './@types'
 /**
  *   Clone utility function
  *   @param {Any} input - Initial product price
@@ -69,4 +70,111 @@ export const isObject = <T>(
   return true
 }
 
-console.log(isObject(input))
+type KeyType = string | string[]
+type OptionsType__HasKeys = {
+  deep?: boolean
+  searchType?: 'some' | 'every'
+}
+
+const keySearch__Shallow = (keySet: Set<string>, inputObj: DefaultObject) => {
+  for (const prop in inputObj) {
+    if (keySet.has(prop)) return true
+  }
+
+  return false
+}
+
+const keySearch__Shallow__Every = (
+  keySet: Set<string>,
+  inputObj: DefaultObject
+) => {
+  for (const prop in inputObj) {
+    if (keySet.has(prop)) {
+      keySet.delete(prop)
+
+      if (keySet.size === 0) return true
+    }
+  }
+
+  return false
+}
+
+const keySearch__Deep__Some = (
+  keySet: Set<string>,
+  inputObj: DefaultObject
+) => {
+  const nestedObject = []
+
+  for (const prop in inputObj) {
+    if (keySet.has(prop)) {
+      keySet.delete(prop)
+
+      if (keySet.size === 0) return true
+    }
+    if (isObject(inputObj[prop])) {
+      nestedObject.push(prop)
+    }
+  }
+
+  for (let i = 0; i < nestedObject.length; i++) {
+    if (
+      keySearch__Deep__Some(keySet, inputObj[nestedObject[i]] as DefaultObject)
+    ) {
+      return true
+    }
+  }
+
+  return false
+}
+
+const keySearch__Deep__Every = (
+  keySet: Set<string>,
+  inputObj: DefaultObject
+) => {
+  const nestedObject = []
+
+  for (const prop in inputObj) {
+    if (keySet.has(prop)) {
+      keySet.delete(prop)
+
+      if (keySet.size === 0) return true
+    }
+    if (isObject(inputObj[prop])) {
+      nestedObject.push(prop)
+    }
+  }
+
+  for (let i = 0; i < nestedObject.length; i++) {
+    if (
+      keySearch__Deep__Every(keySet, inputObj[nestedObject[i]] as DefaultObject)
+    ) {
+      return true
+    }
+  }
+
+  return false
+}
+
+export const hasKeys = (
+  keys: KeyType,
+  inputObj: DefaultObject,
+  options?: OptionsType__HasKeys
+) => {
+  const keySet = new Set(Array.isArray(keys) ? keys : [keys])
+
+  if (keySet.size === 0) return false
+
+  if (options?.deep) {
+    if (options.searchType === 'every') {
+      return keySearch__Deep__Every(keySet, inputObj)
+    }
+
+    return keySearch__Deep__Some(keySet, inputObj)
+  }
+
+  if (options?.searchType === 'every') {
+    return keySearch__Shallow__Every(keySet, inputObj)
+  }
+
+  return keySearch__Shallow(keySet, inputObj)
+}
