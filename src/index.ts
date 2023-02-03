@@ -27,6 +27,7 @@ const input = {
     },
     i: {
       j: 5,
+      x: 10,
     },
   },
 }
@@ -76,105 +77,110 @@ type OptionsType__HasKeys = {
   searchType?: 'some' | 'every'
 }
 
-const keySearch__Shallow = (keySet: Set<string>, inputObj: DefaultObject) => {
-  for (const prop in inputObj) {
-    if (keySet.has(prop)) return true
+class HasKeys {
+  shallowKeySearch(keySet: Set<string>, inputObj: DefaultObject) {
+    for (const prop in inputObj) {
+      if (keySet.has(prop)) return true
+    }
+
+    return false
   }
 
-  return false
-}
+  shallowKeySearch__Every(keySet: Set<string>, inputObj: DefaultObject) {
+    for (const prop in inputObj) {
+      if (keySet.has(prop)) {
+        keySet.delete(prop)
 
-const keySearch__Shallow__Every = (
-  keySet: Set<string>,
-  inputObj: DefaultObject
-) => {
-  for (const prop in inputObj) {
-    if (keySet.has(prop)) {
-      keySet.delete(prop)
-
-      if (keySet.size === 0) return true
+        if (keySet.size === 0) return true
+      }
     }
+
+    return false
   }
 
-  return false
-}
+  deepKeySearch__Some(keySet: Set<string>, inputObj: DefaultObject) {
+    const nestedObject: string[] = []
 
-const keySearch__Deep__Some = (
-  keySet: Set<string>,
-  inputObj: DefaultObject
-) => {
-  const nestedObject = []
+    for (const prop in inputObj) {
+      if (keySet.has(prop)) {
+        keySet.delete(prop)
 
-  for (const prop in inputObj) {
-    if (keySet.has(prop)) {
-      keySet.delete(prop)
-
-      if (keySet.size === 0) return true
+        if (keySet.size === 0) return true
+      }
+      if (isObject(inputObj[prop])) {
+        nestedObject.push(prop)
+      }
     }
-    if (isObject(inputObj[prop])) {
-      nestedObject.push(prop)
+
+    for (let i = 0; i < nestedObject.length; i++) {
+      if (
+        this.deepKeySearch__Some(
+          keySet,
+          inputObj[nestedObject[i]] as DefaultObject
+        )
+      ) {
+        return true
+      }
     }
+
+    return false
   }
 
-  for (let i = 0; i < nestedObject.length; i++) {
-    if (
-      keySearch__Deep__Some(keySet, inputObj[nestedObject[i]] as DefaultObject)
+  deepKeySearch__Every(keySet: Set<string>, inputObj: DefaultObject) {
+    const nestedObject: string[] = []
+
+    for (const prop in inputObj) {
+      if (keySet.has(prop)) {
+        keySet.delete(prop)
+
+        if (keySet.size === 0) return true
+      }
+      if (isObject(inputObj[prop])) {
+        nestedObject.push(prop)
+      }
+    }
+
+    for (let i = 0; i < nestedObject.length; i++) {
+      if (
+        this.deepKeySearch__Every(
+          keySet,
+          inputObj[nestedObject[i]] as DefaultObject
+        )
+      ) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  main() {
+    const vm = this
+
+    return function (
+      keys: KeyType,
+      inputObj: DefaultObject,
+      options?: OptionsType__HasKeys
     ) {
-      return true
+      const keySet = new Set(Array.isArray(keys) ? keys : [keys])
+
+      if (keySet.size === 0) return false
+
+      if (options?.deep) {
+        if (options.searchType === 'every') {
+          return vm.deepKeySearch__Every(keySet, inputObj)
+        }
+
+        return vm.deepKeySearch__Some(keySet, inputObj)
+      }
+
+      if (options?.searchType === 'every') {
+        return vm.shallowKeySearch__Every(keySet, inputObj)
+      }
+
+      return vm.shallowKeySearch(keySet, inputObj)
     }
   }
-
-  return false
 }
 
-const keySearch__Deep__Every = (
-  keySet: Set<string>,
-  inputObj: DefaultObject
-) => {
-  const nestedObject = []
-
-  for (const prop in inputObj) {
-    if (keySet.has(prop)) {
-      keySet.delete(prop)
-
-      if (keySet.size === 0) return true
-    }
-    if (isObject(inputObj[prop])) {
-      nestedObject.push(prop)
-    }
-  }
-
-  for (let i = 0; i < nestedObject.length; i++) {
-    if (
-      keySearch__Deep__Every(keySet, inputObj[nestedObject[i]] as DefaultObject)
-    ) {
-      return true
-    }
-  }
-
-  return false
-}
-
-export const hasKeys = (
-  keys: KeyType,
-  inputObj: DefaultObject,
-  options?: OptionsType__HasKeys
-) => {
-  const keySet = new Set(Array.isArray(keys) ? keys : [keys])
-
-  if (keySet.size === 0) return false
-
-  if (options?.deep) {
-    if (options.searchType === 'every') {
-      return keySearch__Deep__Every(keySet, inputObj)
-    }
-
-    return keySearch__Deep__Some(keySet, inputObj)
-  }
-
-  if (options?.searchType === 'every') {
-    return keySearch__Shallow__Every(keySet, inputObj)
-  }
-
-  return keySearch__Shallow(keySet, inputObj)
-}
+const hasKeys = new HasKeys().main()
