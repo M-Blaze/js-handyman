@@ -1,13 +1,14 @@
 {
   "name": "js-handyman",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Handy methods for Javascript.",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "start": "node src/index.js",
     "test": "jest --config jestconfig.json",
     "watch": "tsc src/index.ts -w",
-    "start": "node src/index.js"
+    "version": "git add -A src"
   },
   "author": "raimoulik@gmail.com",
   "license": "ISC",
