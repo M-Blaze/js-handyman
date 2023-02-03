@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 exports.__esModule = true;
-exports.isObject = exports.cloneDeep = void 0;
+exports.hasKeys = exports.isObject = exports.cloneDeep = void 0;
 /**
  *   Clone utility function
  *   @param {Any} input - Initial product price
@@ -130,6 +130,7 @@ var HasKeys = /** @class */ (function () {
     };
     HasKeys.prototype.main = function () {
         var vm = this;
+        console.log(exports.isObject);
         return function (keys, inputObj, options) {
             var keySet = new Set(Array.isArray(keys) ? keys : [keys]);
             if (keySet.size === 0)
@@ -148,5 +149,4 @@ var HasKeys = /** @class */ (function () {
     };
     return HasKeys;
 }());
-var hasKeys = new HasKeys().main();
-console.log(hasKeys('x', input, { deep: true }));
+exports.hasKeys = new HasKeys().main();

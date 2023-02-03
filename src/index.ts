@@ -183,4 +183,4 @@ class HasKeys {
   }
 }
 
-const hasKeys = new HasKeys().main()
+export const hasKeys = new HasKeys().main()

@@ -1,7 +1,7 @@
 {
-  "name": "obj-utilities",
+  "name": "js-handyman",
   "version": "1.0.0",
-  "description": "Helper functions for objects in Javascript.",
+  "description": "Handy methods for Javascript.",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
