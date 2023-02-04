@@ -6,11 +6,7 @@
     "outDir": "./lib",
     "strict": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/__tests__/*"
-  ]
+  "include": ["src"],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
