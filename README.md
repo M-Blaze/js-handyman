@@ -17,7 +17,7 @@ Using npm:
 Using yarn:
 
 ```
-  yarn add -D js-handyman
+  yarn add js-handyman
 ```
 
 Author: [github.com/M-Blaze](github.com/M-Blaze)  
