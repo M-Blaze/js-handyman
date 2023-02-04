@@ -3,10 +3,11 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
+    "rootDir": "./src",
     "outDir": "./lib",
+    "noImplicitAny": true,
     "strict": true
   },
-  "include": ["src"],
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }

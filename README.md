@@ -20,8 +20,6 @@ Using yarn:
   yarn add -D js-handyman
 ```
 
----
-
 Author: [github.com/M-Blaze](github.com/M-Blaze)  
 Link to package: [https://www.npmjs.com/package/js-handyman](https://www.npmjs.com/package/js-handyman)  
 Link to repository: [github.com/M-Blaze/js-handyman](github.com/M-Blaze/js-handyman)
