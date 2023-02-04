@@ -1,14 +1,8 @@
 # js-handyman
 
----
+### A collective package of handy js methods
 
-## A package of handy js methods
-
----
-
-# Installation
-
----
+## Installation
 
 Using npm:
 
@@ -21,5 +15,5 @@ Using npm:
 Using yarn:
 
 ```
-  yarn add --D js-handyman
+  yarn add -D js-handyman
 ```
