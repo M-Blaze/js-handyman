@@ -11,7 +11,7 @@
     "test": "jest --config jestconfig.json",
     "watch": "tsc src/index.ts -w",
     "version": "git add -A src",
-    "broadcast": "yarn version && npm publish && git push"
+    "broadcast": "yarn version && git push"
   },
   "repository": {
     "type": "git",
