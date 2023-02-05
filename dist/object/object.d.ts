@@ -10,3 +10,4 @@ type OptionsType__HasKeys = {
 };
 export declare const hasKeys: (keys: KeyType, inputObj: DefaultObject, options?: OptionsType__HasKeys) => boolean;
 export {};
+//# sourceMappingURL=object.d.ts.map
