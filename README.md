@@ -1,6 +1,6 @@
 # js-handyman
 
-### An npm package of handy js methods.
+### A npm package of handy js methods.
 
 ---
 
